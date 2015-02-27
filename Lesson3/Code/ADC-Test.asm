@@ -1,0 +1,51 @@
+.include "m32def.inc"
+;Initialisér programmet
+RESET:
+ldi	R16, 0x00	; 
+out	DDRC, R16	; Set PORTC as input
+ldi	R16, 255	;
+out 	PORTC,R16 	; Enable pull-up on PORTC
+
+; PORTB setup
+out 	DDRB,R16 	; PORTB = output
+ldi	R16, 0x00	;
+out	PORTB, R16	; Turn LEDS off
+
+;----------------------------------------------------------
+
+;initialize ADC
+
+   ldi  r16, (1<<ADEN)|(1<<ADPS2)|(1<<ADPS1)|(1<<ADPS0)
+   out  ADCSR, r16
+; ADEN  - ADC enable
+; ADPSx - prescaler
+; ADSC  - start conversion
+
+   ldi  r16, (1<<REFS0) ;reference = AVCC (=VCC)
+   out  ADMUX, r16
+; REFS1:REFS0 - reference voltage (see datasheet)
+; MUX2:MUX0   - channel select
+
+;----------------------------------------------------------
+
+.equ channel = 0 ; ADC0
+
+;Start programløkken
+LOOP:
+
+; read_adc
+   ldi  r16, (1<<REFS0) | channel ; set channel | (1<<ADLAR)
+   out  ADMUX, r16
+   sbi  ADCSR, ADSC              ; start conversion
+
+wait_for_conv_finished:
+   sbic ADCSR, ADSC  ;bit ADSC goes low after conversion done         
+   rjmp wait_for_conv_finished
+
+   in   r2, ADCL
+
+out	PORTB, R2
+
+rjmp 	LOOP
+
+

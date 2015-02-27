@@ -1,0 +1,126 @@
+OPGAVE 1:
+
+(Z+X).(Z+X'+Y) = (Z+X).(Z+Y)
+
+For (Z+X).(Z+X'+Y)
+
+X	Y	Z	F
+0	0	0	0
+1	0	0	0
+1	1	0	1
+1	0	1	1
+1	1	1	1
+0	1	0	0
+0	1	1	1
+0	0	1	1
+
+For (Z+X).(Z+Y)
+
+X	Y	Z	F
+0	0	0	0
+1	0	0	0
+1	1	0	1
+1	0	1	1
+1	1	1	1
+0	1	0	0
+0	1	1	1
+0	0	1	1
+
+De er ens!
+
+OPGAVE 2:
+
+Reducér følgende udtryk vha. boolske regneregler:
+
+A) F = W∙X∙Y∙Z∙(W∙X∙Y∙Z’ + W∙X’∙Y∙Z + W’∙X∙Y∙Z + W∙X∙Y’∙Z)
+
+W*X*Y*Z*W*X*Y*Z' + W*X*Y*Z*W*X'*Y*Z + W*X*Y*Z*W'*X*Y*Z + W*X*Y*Z*W*X*Y'*Z //Ganger ind i parentesen
+
+W*X*Y*0 + W*0*Y*Z + 0*X*Y*Z + W*X*0*Z //X.X=X og X.X'=0
+
+0 //X.0=0
+
+X	Y	Z	W	F
+0	0	0	0	0
+1	1	1	1	0
+
+Ved betragtning kan det ses at yderligere beregninger er unødvendige
+
+B) F = A∙B + A∙B∙C’∙D + A∙B∙D∙E’ + A’∙B∙C’∙E + A’∙B’∙C’∙E
+
+
+OPGAVE 3:
+
+Bestem sandhedstabeller for følgende boolske udtryk:
+
+A) F = X’∙Y + X’∙Y’∙Z
+
+X	Y	Z	F
+0	0	0	0
+0	0	1	1
+0	1	0	1
+0	1	1	1
+1	0	0	0
+1	0	1	0
+1	1	0	0
+1	1	1	0
+
+B) F = W’∙X + Y’∙Z’ + X’∙Z
+
+X	Y	Z	W	F
+0	0	0	0	1
+0	0	0	1	1
+0	0	1	0	1
+0	0	1	1	1
+0	1	0	0	0
+0	1	0	1	0
+0	1	1	0	1
+0	1	1	1	1
+1	0	0	0	1
+1	0	0	1	1
+1	0	1	0	1
+1	0	1	1	0
+1	1	0	0	1
+1	1	0	1	0
+1	1	1	0	1
+1	1	1	1	0
+
+C) F = W’∙X + W∙(Y’ + Z)
+
+X	Y	Z	W	F
+0	0	0	0	0
+0	0	0	1	1
+0	0	1	0	0
+0	0	1	1	1
+0	1	0	0	0
+0	1	0	1	0
+0	1	1	0	0
+0	1	1	1	1
+1	0	0	0	1
+1	0	0	1	1
+1	0	1	0	1
+1	0	1	1	1
+1	1	0	0	1
+1	1	0	1	0
+1	1	1	0	1
+1	1	1	1	1	
+
+D) F = (W∙Z)’ ∙ (X’+Y’)’ = (W∙Z)’ ∙ X’’∙Y’’ (reducér evt. først)
+
+
+E) F = A’∙B∙(C∙B∙A’ + B∙C’) (reducér evt. først)
+F) F = X∙Y∙(X’∙Y∙Z + X∙Y’∙Z + X∙Y∙Z’ + X’∙Y’∙Z) (reducér evt. først)
+
+
+
+
+
+
+
+
+
+
+
+
+
+		
