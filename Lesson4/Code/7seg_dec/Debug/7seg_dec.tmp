@@ -1,0 +1,37 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.1.57</VERSION>
+ <DEVICE>"ATmega32A"</DEVICE>
+ <WORKING_DIR>D:\Github\MIC\Lesson4\Code\7seg_dec\Debug</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR Assembler\Native\2.1.1175\avrassembler\Include</DIR>
+  <DIR>C:\Program Files (x86)\Atmel\AVR Tools\AvrAssembler2\Appnotes</DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>D:\Github\MIC\Lesson4\Code\7seg_dec\7seg_dec.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR Assembler\Native\2.1.1175\avrassembler\Include\m32Adef.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>D:\Github\MIC\Lesson4\Code\7seg_dec\Debug/7seg_dec.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>7seg_dec.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>7seg_dec.map</FILE>
+  <FILE>7seg_dec.lss</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <RESET><FILE>D:\Github\MIC\Lesson4\Code\7seg_dec\7seg_dec.asm</FILE><LINE>24</LINE></RESET>
+  <LOOP><FILE>D:\Github\MIC\Lesson4\Code\7seg_dec\7seg_dec.asm</FILE><LINE>38</LINE></LOOP>
+  <SEG0_TRUE><FILE>D:\Github\MIC\Lesson4\Code\7seg_dec\7seg_dec.asm</FILE><LINE>75</LINE></SEG0_TRUE>
+  <SEG1_TRUE><FILE>D:\Github\MIC\Lesson4\Code\7seg_dec\7seg_dec.asm</FILE><LINE>80</LINE></SEG1_TRUE>
+  <SEG2_TRUE><FILE>D:\Github\MIC\Lesson4\Code\7seg_dec\7seg_dec.asm</FILE><LINE>85</LINE></SEG2_TRUE>
+  <SEG3_TRUE><FILE>D:\Github\MIC\Lesson4\Code\7seg_dec\7seg_dec.asm</FILE><LINE>90</LINE></SEG3_TRUE>
+  <SEG4_TRUE><FILE>D:\Github\MIC\Lesson4\Code\7seg_dec\7seg_dec.asm</FILE><LINE>95</LINE></SEG4_TRUE>
+  <SEG5_TRUE><FILE>D:\Github\MIC\Lesson4\Code\7seg_dec\7seg_dec.asm</FILE><LINE>100</LINE></SEG5_TRUE>
+  <SEG6_TRUE><FILE>D:\Github\MIC\Lesson4\Code\7seg_dec\7seg_dec.asm</FILE><LINE>105</LINE></SEG6_TRUE>
+  <SEG7_TRUE><FILE>D:\Github\MIC\Lesson4\Code\7seg_dec\7seg_dec.asm</FILE><LINE>110</LINE></SEG7_TRUE>
+  <SEG8_TRUE><FILE>D:\Github\MIC\Lesson4\Code\7seg_dec\7seg_dec.asm</FILE><LINE>115</LINE></SEG8_TRUE>
+  <SEG9_TRUE><FILE>D:\Github\MIC\Lesson4\Code\7seg_dec\7seg_dec.asm</FILE><LINE>120</LINE></SEG9_TRUE>
+ </LABELS>
+</ASSEMBLER_INFO>

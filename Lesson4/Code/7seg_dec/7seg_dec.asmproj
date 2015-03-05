@@ -4,17 +4,17 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>6.2</ProjectVersion>
     <ToolchainName>com.Atmel.AVRAssembler</ToolchainName>
-    <ProjectGuid>{fdad08af-d01b-4fe8-bf23-342cde63bb0d}</ProjectGuid>
+    <ProjectGuid>{50640cb1-3386-4fff-a842-84d71e6b5deb}</ProjectGuid>
     <avrdeviceseries>none</avrdeviceseries>
-    <avrdevice>ATmega324A</avrdevice>
+    <avrdevice>ATmega32A</avrdevice>
     <OutputFileName>$(MSBuildProjectName)</OutputFileName>
     <OutputFileExtension>.obj</OutputFileExtension>
     <OutputDirectory>$(MSBuildProjectDirectory)\$(Configuration)</OutputDirectory>
     <Language>ASSEMBLY</Language>
-    <AssemblyName>Lesson4</AssemblyName>
-    <Name>Lesson4</Name>
-    <RootNamespace>Lesson4</RootNamespace>
-    <EntryFile>$(MSBuildProjectDirectory)\Lesson4.asm</EntryFile>
+    <AssemblyName>7seg_dec</AssemblyName>
+    <Name>7seg_dec</Name>
+    <RootNamespace>7seg_dec</RootNamespace>
+    <EntryFile>$(MSBuildProjectDirectory)\7seg_dec.asm</EntryFile>
     <ToolchainFlavour>Native</ToolchainFlavour>
     <KeepTimersRunning>true</KeepTimersRunning>
     <OverrideVtor>false</OverrideVtor>
@@ -54,7 +54,7 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Lesson4.asm">
+    <Compile Include="7seg_dec.asm">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
