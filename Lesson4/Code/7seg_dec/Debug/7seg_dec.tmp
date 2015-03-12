@@ -4,7 +4,7 @@
  <WORKING_DIR>D:\Github\MIC\Lesson4\Code\7seg_dec\Debug</WORKING_DIR>
  <INCLUDE_PATH>
   <DIR>C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR Assembler\Native\2.1.1175\avrassembler\Include</DIR>
-  <DIR>C:\Program Files (x86)\Atmel\AVR Tools\AvrAssembler2\Appnotes</DIR>
+  <DIR></DIR>
  </INCLUDE_PATH>
  <SOURCE_FILE>D:\Github\MIC\Lesson4\Code\7seg_dec\7seg_dec.asm</SOURCE_FILE>
  <INCLUDED_FILES>
@@ -22,16 +22,16 @@
  </OUTPUT_FILES>
  <LABELS>
   <RESET><FILE>D:\Github\MIC\Lesson4\Code\7seg_dec\7seg_dec.asm</FILE><LINE>24</LINE></RESET>
-  <LOOP><FILE>D:\Github\MIC\Lesson4\Code\7seg_dec\7seg_dec.asm</FILE><LINE>38</LINE></LOOP>
-  <SEG0_TRUE><FILE>D:\Github\MIC\Lesson4\Code\7seg_dec\7seg_dec.asm</FILE><LINE>75</LINE></SEG0_TRUE>
-  <SEG1_TRUE><FILE>D:\Github\MIC\Lesson4\Code\7seg_dec\7seg_dec.asm</FILE><LINE>80</LINE></SEG1_TRUE>
-  <SEG2_TRUE><FILE>D:\Github\MIC\Lesson4\Code\7seg_dec\7seg_dec.asm</FILE><LINE>85</LINE></SEG2_TRUE>
-  <SEG3_TRUE><FILE>D:\Github\MIC\Lesson4\Code\7seg_dec\7seg_dec.asm</FILE><LINE>90</LINE></SEG3_TRUE>
-  <SEG4_TRUE><FILE>D:\Github\MIC\Lesson4\Code\7seg_dec\7seg_dec.asm</FILE><LINE>95</LINE></SEG4_TRUE>
-  <SEG5_TRUE><FILE>D:\Github\MIC\Lesson4\Code\7seg_dec\7seg_dec.asm</FILE><LINE>100</LINE></SEG5_TRUE>
-  <SEG6_TRUE><FILE>D:\Github\MIC\Lesson4\Code\7seg_dec\7seg_dec.asm</FILE><LINE>105</LINE></SEG6_TRUE>
-  <SEG7_TRUE><FILE>D:\Github\MIC\Lesson4\Code\7seg_dec\7seg_dec.asm</FILE><LINE>110</LINE></SEG7_TRUE>
-  <SEG8_TRUE><FILE>D:\Github\MIC\Lesson4\Code\7seg_dec\7seg_dec.asm</FILE><LINE>115</LINE></SEG8_TRUE>
-  <SEG9_TRUE><FILE>D:\Github\MIC\Lesson4\Code\7seg_dec\7seg_dec.asm</FILE><LINE>120</LINE></SEG9_TRUE>
+  <LOOP><FILE>D:\Github\MIC\Lesson4\Code\7seg_dec\7seg_dec.asm</FILE><LINE>39</LINE></LOOP>
+  <SEG0_TRUE><FILE>D:\Github\MIC\Lesson4\Code\7seg_dec\7seg_dec.asm</FILE><LINE>76</LINE></SEG0_TRUE>
+  <SEG1_TRUE><FILE>D:\Github\MIC\Lesson4\Code\7seg_dec\7seg_dec.asm</FILE><LINE>81</LINE></SEG1_TRUE>
+  <SEG2_TRUE><FILE>D:\Github\MIC\Lesson4\Code\7seg_dec\7seg_dec.asm</FILE><LINE>86</LINE></SEG2_TRUE>
+  <SEG3_TRUE><FILE>D:\Github\MIC\Lesson4\Code\7seg_dec\7seg_dec.asm</FILE><LINE>91</LINE></SEG3_TRUE>
+  <SEG4_TRUE><FILE>D:\Github\MIC\Lesson4\Code\7seg_dec\7seg_dec.asm</FILE><LINE>96</LINE></SEG4_TRUE>
+  <SEG5_TRUE><FILE>D:\Github\MIC\Lesson4\Code\7seg_dec\7seg_dec.asm</FILE><LINE>101</LINE></SEG5_TRUE>
+  <SEG6_TRUE><FILE>D:\Github\MIC\Lesson4\Code\7seg_dec\7seg_dec.asm</FILE><LINE>106</LINE></SEG6_TRUE>
+  <SEG7_TRUE><FILE>D:\Github\MIC\Lesson4\Code\7seg_dec\7seg_dec.asm</FILE><LINE>111</LINE></SEG7_TRUE>
+  <SEG8_TRUE><FILE>D:\Github\MIC\Lesson4\Code\7seg_dec\7seg_dec.asm</FILE><LINE>116</LINE></SEG8_TRUE>
+  <SEG9_TRUE><FILE>D:\Github\MIC\Lesson4\Code\7seg_dec\7seg_dec.asm</FILE><LINE>121</LINE></SEG9_TRUE>
  </LABELS>
 </ASSEMBLER_INFO>

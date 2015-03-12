@@ -30,6 +30,7 @@ ldi	R16, 0xFF	;Load in pullup mask for all pins on port.
 out PORTC,R16 	;Enable pull-up on PORTC
 
 ;PORTB setup
+ldi	R16, 0xFF	;Load in out mask for all pins on port.
 out DDRB,R16 	;PORTB = output
 ldi	R16, 0x00	;
 out	PORTB, R16	;Turn LEDS off

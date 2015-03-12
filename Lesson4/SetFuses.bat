@@ -11,6 +11,8 @@ set LowFuse=0xe4
 
 avrdude -p m32 %PROGRAMMER% -U hfuse:w:%HighFuse%:m -U lfuse:w:%LowFuse%:m
 
+pause
+
 	
 	
 

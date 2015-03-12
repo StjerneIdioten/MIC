@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.1.57  D:\Github\MIC\Lesson4\Code\7seg_dec\7seg_dec.asm Fri Mar 06 00:34:18 2015
+AVRASM ver. 2.1.57  D:\Github\MIC\Lesson4\Code\7seg_dec\7seg_dec.asm Thu Mar 12 13:35:22 2015
 
 [builtin](2): Including file 'C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR Assembler\Native\2.1.1175\avrassembler\Include\m32Adef.inc'
                  
@@ -850,97 +850,98 @@ AVRASM ver. 2.1.57  D:\Github\MIC\Lesson4\Code\7seg_dec\7seg_dec.asm Fri Mar 06 
 000003 bb05      out PORTC,R16 	;Enable pull-up on PORTC
                  
                  ;PORTB setup
-000004 bb07      out DDRB,R16 	;PORTB = output
-000005 e000      ldi	R16, 0x00	;
-000006 bb08      out	PORTB, R16	;Turn LEDS off
+000004 ef0f      ldi	R16, 0xFF	;Load in out mask for all pins on port.
+000005 bb07      out DDRB,R16 	;PORTB = output
+000006 e000      ldi	R16, 0x00	;
+000007 bb08      out	PORTB, R16	;Turn LEDS off
                  
                  ;Start Program Loop
                  LOOP:
                  
-000007 b303      in	R16, PINC	;Load the value of the buttons into R16
+000008 b303      in	R16, PINC	;Load the value of the buttons into R16
                  
-000008 3f0f      cpi R16, 0xFF	;Test if the buttons are equal to a pattern, in this case zero(Display is active low).
-000009 f099      breq SEG0_TRUE	;If the values were equal, then we know which button was pressed. In this case none. Jump to SEG0_TRUE if they were equal.			
+000009 3f0f      cpi R16, 0xFF	;Test if the buttons are equal to a pattern, in this case zero(Display is active low).
+00000a f099      breq SEG0_TRUE	;If the values were equal, then we know which button was pressed. In this case none. Jump to SEG0_TRUE if they were equal.			
                  				;The rest are just the same code with different values.
                  								
-00000a 3f0e      cpi R16, 0b11111110	
-00000b f0a1      breq SEG1_TRUE
+00000b 3f0e      cpi R16, 0b11111110	
+00000c f0a1      breq SEG1_TRUE
                  
-00000c 3f0d      cpi R16, 0b11111101	
-00000d f0a9      breq SEG2_TRUE
+00000d 3f0d      cpi R16, 0b11111101	
+00000e f0a9      breq SEG2_TRUE
                  
-00000e 3f0b      cpi R16, 0b11111011	
-00000f f0b1      breq SEG3_TRUE
+00000f 3f0b      cpi R16, 0b11111011	
+000010 f0b1      breq SEG3_TRUE
                  
-000010 3f07      cpi R16, 0b11110111		
-000011 f0b9      breq SEG4_TRUE
+000011 3f07      cpi R16, 0b11110111		
+000012 f0b9      breq SEG4_TRUE
                  
-000012 3e0f      cpi R16, 0b11101111		
-000013 f0c1      breq SEG5_TRUE
+000013 3e0f      cpi R16, 0b11101111		
+000014 f0c1      breq SEG5_TRUE
                  
-000014 3d0f      cpi R16, 0b11011111		
-000015 f0c9      breq SEG6_TRUE
+000015 3d0f      cpi R16, 0b11011111		
+000016 f0c9      breq SEG6_TRUE
                  
-000016 3b0f      cpi R16, 0b10111111	
-000017 f0d1      breq SEG7_TRUE
+000017 3b0f      cpi R16, 0b10111111	
+000018 f0d1      breq SEG7_TRUE
                  
-000018 370f      cpi R16, 0b01111111	
-000019 f0d9      breq SEG8_TRUE
+000019 370f      cpi R16, 0b01111111	
+00001a f0d9      breq SEG8_TRUE
                  
                  				;If more that one button is pressed, the pattern won't match our checks and we will output E and loop again.	
-00001a e80c      ldi R16,segE	;Load in the value representing that there is an error, E
-00001b bb08      out PORTB, R16	;Load E to the display
-00001c cfea      rjmp LOOP		;Loop again
+00001b e80c      ldi R16,segE	;Load in the value representing that there is an error, E
+00001c bb08      out PORTB, R16	;Load E to the display
+00001d cfea      rjmp LOOP		;Loop again
                  
                  SEG0_TRUE:
-00001d ea00      ldi R16,seg0	;Load in the value that represents zero on the display
-00001e bb08      out	PORTB, R16	;Make the display display zero
-00001f cfe7      rjmp	LOOP	;Go back and loop
+00001e ea00      ldi R16,seg0	;Load in the value that represents zero on the display
+00001f bb08      out	PORTB, R16	;Make the display display zero
+000020 cfe7      rjmp	LOOP	;Go back and loop
                  
                  SEG1_TRUE:
-000020 ef03      ldi R16,seg1	
-000021 bb08      out	PORTB, R16	
-000022 cfe4      rjmp	LOOP	
+000021 ef03      ldi R16,seg1	
+000022 bb08      out	PORTB, R16	
+000023 cfe4      rjmp	LOOP	
                  
                  SEG2_TRUE:
-000023 e904      ldi R16,seg2	
-000024 bb08      out	PORTB, R16	
-000025 cfe1      rjmp	LOOP	
+000024 e904      ldi R16,seg2	
+000025 bb08      out	PORTB, R16	
+000026 cfe1      rjmp	LOOP	
                  
                  SEG3_TRUE:
-000026 e901      ldi R16,seg3	
-000027 bb08      out	PORTB, R16	
-000028 cfde      rjmp	LOOP	
+000027 e901      ldi R16,seg3	
+000028 bb08      out	PORTB, R16	
+000029 cfde      rjmp	LOOP	
                  
                  SEG4_TRUE:
-000029 ec03      ldi R16,seg4	
-00002a bb08      out	PORTB, R16	
-00002b cfdb      rjmp	LOOP
+00002a ec03      ldi R16,seg4	
+00002b bb08      out	PORTB, R16	
+00002c cfdb      rjmp	LOOP
                  
                  SEG5_TRUE:
-00002c e809      ldi R16,seg5	
-00002d bb08      out	PORTB, R16	
-00002e cfd8      rjmp	LOOP	
+00002d e809      ldi R16,seg5	
+00002e bb08      out	PORTB, R16	
+00002f cfd8      rjmp	LOOP	
                  
                  SEG6_TRUE:
-00002f e808      ldi R16,seg6	
-000030 bb08      out	PORTB, R16	
-000031 cfd5      rjmp	LOOP	
+000030 e808      ldi R16,seg6	
+000031 bb08      out	PORTB, R16	
+000032 cfd5      rjmp	LOOP	
                  
                  SEG7_TRUE:
-000032 eb03      ldi R16,seg7	
-000033 bb08      out	PORTB, R16	
-000034 cfd2      rjmp	LOOP	
+000033 eb03      ldi R16,seg7	
+000034 bb08      out	PORTB, R16	
+000035 cfd2      rjmp	LOOP	
                  
                  SEG8_TRUE:
-000035 e800      ldi R16,seg8	
-000036 bb08      out	PORTB, R16	
-000037 cfcf      rjmp	LOOP	
+000036 e800      ldi R16,seg8	
+000037 bb08      out	PORTB, R16	
+000038 cfcf      rjmp	LOOP	
                  
                  SEG9_TRUE:
-000038 e801      ldi R16,seg9	
-000039 bb08      out	PORTB, R16	
-00003a cfcc      rjmp	LOOP		
+000039 e801      ldi R16,seg9	
+00003a bb08      out	PORTB, R16	
+00003b cfcc      rjmp	LOOP		
 
 
 RESOURCE USE INFORMATION
@@ -960,7 +961,7 @@ counted separately from r26..r31 here.
 "ATmega32A" register use summary:
 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 r5 :   0 r6 :   0 r7 :   0 
 r8 :   0 r9 :   0 r10:   0 r11:   0 r12:   0 r13:   0 r14:   0 r15:   0 
-r16:  39 r17:   0 r18:   0 r19:   0 r20:   0 r21:   0 r22:   0 r23:   0 
+r16:  40 r17:   0 r18:   0 r19:   0 r20:   0 r21:   0 r22:   0 r23:   0 
 r24:   0 r25:   0 r26:   0 r27:   0 r28:   0 r29:   0 r30:   0 r31:   0 
 x  :   0 y  :   0 z  :   0 
 Registers used: 1 out of 35 (2.9%)
@@ -976,7 +977,7 @@ clc   :   0 clh   :   0 cli   :   0 cln   :   0 clr   :   0 cls   :   0
 clt   :   0 clv   :   0 clz   :   0 com   :   0 cp    :   0 cpc   :   0 
 cpi   :   9 cpse  :   0 dec   :   0 eor   :   0 fmul  :   0 fmuls :   0 
 fmulsu:   0 icall :   0 ijmp  :   0 in    :   1 inc   :   0 jmp   :   0 
-ld    :   0 ldd   :   0 ldi   :  14 lds   :   0 lpm   :   0 lsl   :   0 
+ld    :   0 ldd   :   0 ldi   :  15 lds   :   0 lpm   :   0 lsl   :   0 
 lsr   :   0 mov   :   0 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
 neg   :   0 nop   :   0 or    :   0 ori   :   0 out   :  15 pop   :   0 
 push  :   0 rcall :   0 ret   :   0 reti  :   0 rjmp  :  11 rol   :   0 
@@ -990,7 +991,7 @@ Instructions used: 6 out of 113 (5.3%)
 "ATmega32A" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x000076    118      0    118   32768   0.4%
+[.cseg] 0x000000 0x000078    120      0    120   32768   0.4%
 [.dseg] 0x000060 0x000060      0      0      0    2048   0.0%
 [.eseg] 0x000000 0x000000      0      0      0    1024   0.0%
 

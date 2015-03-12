@@ -24,7 +24,7 @@ init:	.include "setup_stack.asm"
 ; * Main program
 ; ***********************************
 main:	in	R16,PINC 		; read port C
-	com	R16			; take complement to accomodate active low
+	com	R16					; take complement to accomodate active low
 	ldi 	R17, 0x0F		; load mask
 	and 	R16, R17		; mask out high nibble
 
