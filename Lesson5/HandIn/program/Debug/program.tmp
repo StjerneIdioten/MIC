@@ -4,7 +4,7 @@
  <WORKING_DIR>D:\Github\MIC\Lesson5\HandIn\program\Debug</WORKING_DIR>
  <INCLUDE_PATH>
   <DIR>C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR Assembler\Native\2.1.1175\avrassembler\Include</DIR>
-  <DIR>C:\Program Files (x86)\Atmel\AVR Tools\AvrAssembler2\Appnotes</DIR>
+  <DIR></DIR>
  </INCLUDE_PATH>
  <SOURCE_FILE>D:\Github\MIC\Lesson5\HandIn\program\program.asm</SOURCE_FILE>
  <INCLUDED_FILES>

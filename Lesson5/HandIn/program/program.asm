@@ -4,7 +4,7 @@
 ;.include "m32def.inc"
 
 .equ segmentCount = 5 ;The amount of segments to loop through
-.equ delayTime = 5 ;The delay routine used is about 39.2ms per 1 increase in value.
+.equ delayTime = 1 ;The delay routine used is about 39.2ms per 1 increase in value.
 
 .def COUNT = R20 ;Assign a register to hold the count value for the incrementation
 .def PREV_BUTTON = R21 ;Assign a register to hold the value of the previous button state

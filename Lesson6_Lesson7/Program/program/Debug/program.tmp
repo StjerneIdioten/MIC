@@ -1,0 +1,36 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.1.57</VERSION>
+ <DEVICE>"ATmega32A"</DEVICE>
+ <WORKING_DIR>D:\Github\MIC\Lesson6_Lesson7\Program\program\Debug</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR Assembler\Native\2.1.1175\avrassembler\Include</DIR>
+  <DIR></DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>D:\Github\MIC\Lesson6_Lesson7\Program\program\program.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR Assembler\Native\2.1.1175\avrassembler\Include\m32Adef.inc</FILE>
+  <FILE>D:\Github\MIC\Lesson6_Lesson7\Program\program\DelayMacros.asm</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>D:\Github\MIC\Lesson6_Lesson7\Program\program\Debug/program.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>program.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>program.map</FILE>
+  <FILE>program.lss</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <segments><FILE>D:\Github\MIC\Lesson6_Lesson7\Program\program\program.asm</FILE><LINE>16</LINE></segments>
+  <INIT><FILE>D:\Github\MIC\Lesson6_Lesson7\Program\program\program.asm</FILE><LINE>22</LINE></INIT>
+  <MAIN><FILE>D:\Github\MIC\Lesson6_Lesson7\Program\program\program.asm</FILE><LINE>46</LINE></MAIN>
+  <READ_SWITCH><FILE>D:\Github\MIC\Lesson6_Lesson7\Program\program\program.asm</FILE><LINE>73</LINE></READ_SWITCH>
+  <RESTART><FILE>D:\Github\MIC\Lesson6_Lesson7\Program\program\program.asm</FILE><LINE>69</LINE></RESTART>
+  <DELAY_MS><FILE>D:\Github\MIC\Lesson6_Lesson7\Program\program\program.asm</FILE><LINE>82</LINE></DELAY_MS>
+  <DELAY_MS_2><FILE>D:\Github\MIC\Lesson6_Lesson7\Program\program\program.asm</FILE><LINE>83</LINE></DELAY_MS_2>
+  <DELAY_MS_1><FILE>D:\Github\MIC\Lesson6_Lesson7\Program\program\program.asm</FILE><LINE>85</LINE></DELAY_MS_1>
+  <DELAY_MS_0><FILE>D:\Github\MIC\Lesson6_Lesson7\Program\program\program.asm</FILE><LINE>87</LINE></DELAY_MS_0>
+  <INCREMENT_7SEG><FILE>D:\Github\MIC\Lesson6_Lesson7\Program\program\program.asm</FILE><LINE>97</LINE></INCREMENT_7SEG>
+ </LABELS>
+</ASSEMBLER_INFO>
