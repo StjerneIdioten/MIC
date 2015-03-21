@@ -1,16 +1,12 @@
-
-.include "DelayMacros.asm"
-
 ;.include "m32def.inc"
 
 ;Definitions
 .def COUNT = R20 ;Assign a register to hold the count value for the incrementation
-.def PREV_BUTTON = R21 ;Assign a register to hold the value of the previous button state
-.def BUTTON_DEBOUNCED = R19
+.def SWITCH_STATE = R19
 
 ;Constants
 .equ segmentCount = 5 ;The amount of segments to loop through
-.equ delayTime = 1 ;The delay routine used is about 39.2ms per 1 increase in value.
+.equ debounceDelay = 1 ;The delay used for debouncing the switches, not that important in this application.
 
 .org	0x60
 segments: .db	0xBF, 0xF7, 0xFB, 0xFD, 0xFE, 0xEF ;Create a list of segment values in program memory
@@ -39,63 +35,66 @@ INIT:
 
 	;Misc setup
 	ldi COUNT, 0x00
-	in PREV_BUTTON, PINC
+	rcall READ_SWITCH
 
 	rjmp	MAIN
 
 MAIN:
 
 	rcall READ_SWITCH
-
-cp	PREV_BUTTON, R19	  ;Now compare the new button state with the old button state, if they are not equal then increment the counter.
-breq MAIN
-	
-mov PREV_BUTTON, R19	  ;Assign the new button state as the previous button state for the next increment of the display.
-
-ldi ZH, high(segments<<1) ;load in the high byte of the address of the first value in segments.
-ldi ZL, low(segments<<1)  ;load in the low byte of the address of the first value in segments.
-add ZL, COUNT			  ;Add the offset to get the correct segment
-ldi R16, 0				  ;Load 0 into R16
-adc ZH, R16				  ;Add the carry to ZH if there is one from the offset of ZL
-
-lpm R16, Z				  ;Load the value that Z points to, into R16
-out PORTB, R16			  ;Display it on the display
-
-ldi R16, segmentCount	  ;Load in the value of how many segments there are.
-cp COUNT, R16			  ;Check if we have reached the limit of how many segments there are.
-breq	RESTART			  ;Jump to restart the counter if it's time to loop over.
-inc	COUNT				  ;If it was not time to loop over, then increment the counter.
-rjmp	MAIN			  ;Jump to main and loop again.
-RESTART:					
-ldi COUNT, 0x00			  ;Reset the counter
-rjmp	MAIN
+	tst SWITCH_STATE		  ;Test if the switches are activated
+	breq MAIN
+	rcall INCREMENT_7SEG
+	mov R16,SWITCH_STATE
+	rcall DELAY_MS
+	rjmp MAIN
 
 READ_SWITCH:
-	in	BUTTON_DEBOUNCED, PINC;Load in the current state of the buttons
-	ldi	R16,1
-	rcall	DELAY_MS
-	in	R16, PINC			  ;Load in the new current state of the buttons
-	cp	R16, BUTTON_DEBOUNCED				
-	brne READ_SWITCH		  ;If they are equal then the button has settled
+	in	SWITCH_STATE, PINC		;Load in the current state of the buttons.
+	ldi	R16,debounceDelay		;The time in ms that the delay routine shall stall the microcontroller.
+	rcall DELAY_MS				;Call the delay subroutine.
+	in	R16, PINC				;Load in the new current state of the buttons.
+	cp	R16, SWITCH_STATE		;Compare the previous state of the switches to the current state.				
+	brne READ_SWITCH			;If they are equal then i assume that the switches have settled.
+	com SWITCH_STATE			;Reverse all bits since the switches are active low.
 ret
 
-DELAY_MS:	;Read in value of delay in R16: 1 cycle for ldi, 3 cycles for RCALL
+DELAY_MS:	;Read in value of delay in R16, 1-255
 									; Cycles to execute 
-;----------------------------------/4 cycles, ldi and rcall 
+;----------------------------------/4 cycles, ldi and rcall, +1 cycle if using "call" 
 	DELAY_MS_1:	;--------/---------/    
-	LDI R17, 198 ;-------/----/    /    
+	ldi R17, 198 ;-------/----/    /    
 	DELAY_MS_0: ;--------/    /    /    
-	NOP ;----------------/    /B   /A   
-	DEC R17 ;------------/    /    /    
-	BRNE DELAY_MS_0 ;----/----/    /    
-	DEC R16 ;------------/         /    
-	BRNE DELAY_MS_1  ;---/---------/    
+	nop ;----------------/    /B   /A   
+	dec R17 ;------------/    /    /    
+	brne DELAY_MS_0 ;----/----/    /
+	nop ;----------------/		   /
+	nop ;----------------/		   /
+	nop ;----------------/		   /
+	dec R16 ;------------/         /    
+	brne DELAY_MS_1  ;---/---------/    
 ret	;------------------------------/4 cycles
-
 ; Block B: 199*(1+1+1+2)-1 = 994 
-; Block A: x*(1+B+1+1+1+2)-1 = at x=1, 999 
-; Total # of cycles is: 8 + A = 1007 ; 255007 
+; Block A: R16*(B+1+1+1+1+2)-1 = 999, at R16=1 
+; Total # of cycles is: 8 + A = 1007, at R16=1; 255007, at R16=255
+; This delay will always be 7 cycles too much, but it is a constant overshoot. 
 
 INCREMENT_7SEG:
+	ldi ZH, high(segments<<1) ;load in the high byte of the address of the first value in segments.
+	ldi ZL, low(segments<<1)  ;load in the low byte of the address of the first value in segments.
+	add ZL, COUNT			  ;Add the offset to get the correct segment
+	ldi R16, 0				  ;Load 0 into R16
+	adc ZH, R16				  ;Add the carry to ZH if there is one from the offset of ZL
 
+	lpm R16, Z				  ;Load the value that Z points to, into R16
+	out PORTB, R16			  ;Display it on the display
+
+	ldi R16, segmentCount	  ;Load in the value of how many segments there are.
+	cp COUNT, R16			  ;Check if we have reached the limit of how many segments there are.
+	breq INCREMENT_7SEG_RESTART_COUNT;Jump to restart the counter if it's time to loop over.
+	inc	COUNT				  ;If it was not time to loop over, then increment the counter.
+	rjmp INCREMENT_7SEG_RETURN;Jump to main and loop again.
+INCREMENT_7SEG_RESTART_COUNT:					
+	ldi COUNT, 0x00			  ;Reset the counter
+INCREMENT_7SEG_RETURN:
 ret
