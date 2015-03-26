@@ -1,6 +1,14 @@
-;This macro make use of the registers R16, R17, R18
-;About 39.2 ms per step in value as of now. Will tweak it to a more logical value in the future. As of right now the timing isn't essential.
 
+;DelayMacros.asm
+;Author: jonaa14
+ 
+ 
+;THESE MACROS ARE INTENDED FOR USE WITH A MICRO RUNNING AT 8MHZ!!! TIMINGS WILL BE OFF ;FOR OTHER VALUES!
+  
+  
+
+  ;This macro make use of the registers R16, R17, R18
+  ;About 39.2 ms per step in value as of now. Will tweak it to a more logical value in the future. As of right now the timing isn't essential.
 .MACRO	DELAY						; Cycles to execute 
 	LDI R16, @0 ;					; 1 cycle to execute
 	DELAY2: ;------/--------------/
