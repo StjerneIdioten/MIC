@@ -1,15 +1,8 @@
 .include "m32def.inc"
 
 ;Definitions
-.def COUNT = R20				;Assign a register to hold the count value for the incrementation
-.def SWITCH_STATE = R19			;Register to hold the value of the switches
-
-;Constants
-.equ segmentCount = 5			;The amount of segments to loop through
-.equ debounceDelay = 1			;The delay used for debouncing the switches, not that important in this application.
-
-.org	0x60
-segments: .db	0xBF, 0xF7, 0xFB, 0xFD, 0xFE, 0xEF ;Create a list of segment values in program memory
+.equ S11 = PD2				;Switch 11
+.equ S10 = PD6				;Switch 10
 
 ;Entry point
 .org	0x0000
@@ -22,80 +15,111 @@ INIT:
 	LDI	R16, high(RAMEND)
     OUT	SPH, R16
 
-	;Port C Setup
-	ldi	R16, 0x00				;Load in input mask 
-	out	DDRC, R16				;Set PORTC as input
-	ldi	R16, 0xFF				;Load in pullup mask for all pins on port.
-	out PORTC,R16 				;Enable pull-up on PORTC
+	;Port D Setup
+	ldi	R16, ~((1<<S11)|(1<<S10))
+	out	DDRD, R16			;Set S11 and S10 as input. Everything else is output.
 
 	;PORTB setup
-	out DDRB,R16 				;PORTB = output, since R16 is still loaded with 0xFF
-	ldi	R16, 0xFF				;
-	out	PORTB, R16				;Turn LEDS off
+	ldi R16, 0xFF			
+	out DDRB,R16 			;PORTB = output
+	ldi	R16, 0xFF			;
+	out	PORTB, R16			;Turn LEDS off
 
-	;Misc setup
-	ldi COUNT, 0x00				;Value used for incrementing the display
-	rcall INCREMENT_7SEG		;So that the display starts with showing segment a
+	clr R16					;Clear the registers
+	clr R17					;
+	clr R18					;	
+	clr R19					;
 
-	rjmp	MAIN				;Go to the main loop
+	rjmp	MAIN			;Go to the main loop
 
-MAIN:							;Total cycles: READ_SWITCH + 1 + 1 + INCREMENT_7SEG + DELAY_MS(SWITCH_STATE) + 2 =
-								;1,018ms + The switches time to settle + 24us + ((1000 * SWITCH_STATE) + 7) * 1us + 4us =
-								;Worst Case: 256,053ms + The switches time to settle 
+MAIN:
 
-	rcall READ_SWITCH			;Read in the value of the switches
-	tst SWITCH_STATE			;Test if the switches are activated
-	breq MAIN					;If they werent, then restart
-	rcall INCREMENT_7SEG		;If they were, then increment the display
-	mov R16,SWITCH_STATE		;Load in the value of the switches into R16
-	rcall DELAY_MS				;Create a delay with the switch value
-	rjmp MAIN					;Loop
+	ldi R17, HIGH(2655)		;Load in 2655	
+	ldi R16, LOW(2655)		;
 
-READ_SWITCH:					;Total cycles: 3 + 1 + DELAYS_MS(debounceDelay) + 1 + 1 + (READ_SWITCH Branch) + 1 + 4 = 1us * 11 + 1,007ms + (READ_SWITCH Branch) = 1,018ms + The switches time to settle 
-	in	SWITCH_STATE, PINC		;Load in the current state of the buttons
-	ldi	R16,debounceDelay		;The time in ms that the delay routine shall stall the microcontroller.
-	rcall DELAY_MS				;Call the delay subroutine.
-	in	R16, PINC				;Load in the new current state of the buttons.
-	cp	R16, SWITCH_STATE		;Compare the previous state of the switches to the current state.				
-	brne READ_SWITCH			;If they are equal then i assume that the switches have settled.
-	com SWITCH_STATE			;Reverse all bits since the switches are active low.
+	ldi R19, HIGH(74)		;Load in 74	
+	ldi R18, LOW(74)		;
+	
+	rcall SUM16				;Add 2655 to 74
+	
+	ldi R19, HIGH(592)		;Load in 592
+	ldi R18, LOW(592)		;
+
+	rcall SUM16				;Add 592 to the previous sum which was 2729
+	
+	ldi R19, HIGH(1380)		;Load in 1380
+	ldi R18, LOW(1380)		;
+	
+	rcall SUM16				;Add 1380 to the previous sum which was 3321
+
+	ldi R19, HIGH(17352)	;Load in 17352	
+	ldi R18, LOW(17352)		;
+	
+	rcall SUM16				;Add 17352 to the previous sum which was 4701
+				
+	ldi R18, 5				;Load in 5
+
+	rcall DIV16_8			;Divide the previous sum which was 22053 with 5
+
+	mov R19, R18			;Move the returned results one register up
+	mov R18, R17			;
+	mov R17, R16			;
+
+	com R17					;Complement the result to accomodate the active low display
+	com R18					;
+	com R19					;
+		
+	rcall PRINT_DIODE		;Go to the printout subroutine		
+
+rjmp MAIN					;Loop
+
+
+SUM16:						;Add two 16 bit numbers together. Does not support an overflow into the 17th bit
+	add R16, R18			;Add the lsb parts together
+	adc R17, R19			;Add the msb parts together with carry
 ret
 
-DELAY_MS:	;Read in value of delay in R16, 1-255
-									; Cycles to execute 
-;----------------------------------/4 cycles, ldi and rcall, +1 cycle if using "call" 
-	DELAY_MS_1:	;------------------/    
-	ldi R17, 198 ;				   /    
-	DELAY_MS_0: ;-------------/    /    
-	nop ;				      /B   /A   
-	dec R17 ;			      /    /    
-	brne DELAY_MS_0 ;---------/    /
-	nop ;						   / 
-	nop ;						   /
-	dec R16 ;			           /    
-	brne DELAY_MS_1  ;-------------/    
-ret	;------------------------------/4 cycles
-; Block B: 199*(1+1+1+2)-1 = 994
-; Block A: R16*(1+B+1+1+1+2)-1 = 999, at R16=1; 254999, at R16=255  
-; Total # of cycles is: 8 + A = 1007, at R16=1; 255007, at R16=255
-; The delay would be perfect, if it was used as a macro. But the rest of the program adds some delay too.
 
-INCREMENT_7SEG:					;Total Delay: 4 + 1 + 1 + 1 + 1 + 1 + 3 + 1 + 1 + 1 + (3 or 4) + 4 = Max 24 * 1us = 24us
-	ldi ZH, high(segments<<1)	;load in the high byte of the address of the first value in segments.
-	ldi ZL, low(segments<<1)	;load in the low byte of the address of the first value in segments.
-	add ZL, COUNT				;Add the offset to get the correct segment
-	ldi R16, 0					;Load 0 into R16
-	adc ZH, R16					;Add the carry to ZH if there is one from the offset of ZL
+DIV16_8:					;Divide a 16 bit value with an 8 bit value
+	
+	clr ZH					;Quotient high
+	clr ZL					;Quotient low
 
-	lpm R16, Z					;Load the value that Z points to, into R16
-	out PORTB, R16				;Display it on the display
+DIV16_8_Loop:
 
-	ldi R16, segmentCount		;Load in the value of how many segments there are.
-	cp COUNT, R16				;Check if we have reached the limit of how many segments there are.
-	breq INCREMENT_7SEG_RESTART_COUNT;Jump to restart the counter if it's time to loop over.
-	inc	COUNT					;If it was not time to loop over, then increment the counter.
-	rjmp INCREMENT_7SEG_RETURN	;Jump to main and loop again.
-INCREMENT_7SEG_RESTART_COUNT:					
-	ldi COUNT, 0x00				;Reset the counter
-INCREMENT_7SEG_RETURN:
+	adiw ZH:ZL, 1			;Quotient ++
+	sub R16 ,R18			;Subract the denominator from the lsb of the numerator
+	sbci R17, 0				;Subract the carry from the msb of the numerator
+	brcc DIV16_8_Loop		;If we did not go below zero, loop.
+	sbiw ZH:ZL, 1			;Quotient --
+	add R16, R18			;Add the denominator to the numerator
+							;I don't need to add any carry since i know this will never result in a carry due to the nature of the addition.
+	mov R18, R16			;Output the leftover value to R18
+	movw R17:R16,ZH:ZL		;Output the quotient to R17:R16
+ret
+
+PRINT_DIODE:
+	in R16, PIND			;Read in the pins
+	ori R16, 0xBB			;Mask out the value of all other pins, that the buttons.
+	com R16					;Complement so that we can test for zero
+	tst R16					;Test for zero
+	breq PRINT_DIODE_NONE	;Branch to none, if no switches was activated.
+	cpi R16, (1<<S10)|(1<<S11) ;If not zero, then compare with a mask where both switches are activated.
+	breq PRINT_DIODE_BOTH	;Branch if both were activated
+	sbrs R16, S10			;If they werent both activated, then check if S10 is activated.
+	rjmp PRINT_DIODE_S11	;Branch to S11 handling, if S10 was not active.
+PRINT_DIODE_S10:			;Go to S10 handling if S10 was active.
+	out PORTB, R17			;Output the LSB of the quotient
+	rjmp PRINT_DIODE_END	;Jump to the end
+PRINT_DIODE_S11:			;S11 handling
+	out PORTB, R18			;Output the MSB of the quotient
+	rjmp PRINT_DIODE_END	;Jump to the end
+PRINT_DIODE_BOTH:			;Both switches active, handling
+	out PORTB, R19			;Output the leftover value
+	rjmp PRINT_DIODE_END	;Jump to the end
+PRINT_DIODE_NONE:			;No switches active, handling
+	ser R16					;Set the register to accomodate active low
+	out PORTB, R16			;Clear the display
+PRINT_DIODE_END:			;Loop, handling
+	rjmp PRINT_DIODE		;Loop
 ret
