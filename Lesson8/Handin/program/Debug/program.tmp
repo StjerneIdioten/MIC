@@ -21,19 +21,16 @@
   <FILE>program.lss</FILE>
  </OUTPUT_FILES>
  <LABELS>
-  <INIT><FILE>D:\Github\MIC\Lesson8\Handin\program\program.asm</FILE><LINE>15</LINE></INIT>
-  <MAIN><FILE>D:\Github\MIC\Lesson8\Handin\program\program.asm</FILE><LINE>39</LINE></MAIN>
-  <SUM16><FILE>D:\Github\MIC\Lesson8\Handin\program\program.asm</FILE><LINE>86</LINE></SUM16>
-  <DIV16_8><FILE>D:\Github\MIC\Lesson8\Handin\program\program.asm</FILE><LINE>91</LINE></DIV16_8>
-  <PRINT_DIODE><FILE>D:\Github\MIC\Lesson8\Handin\program\program.asm</FILE><LINE>116</LINE></PRINT_DIODE>
-  <DIV16_8_Loop><FILE>D:\Github\MIC\Lesson8\Handin\program\program.asm</FILE><LINE>96</LINE></DIV16_8_Loop>
-  <PRINT_DIODE_NONE><FILE>D:\Github\MIC\Lesson8\Handin\program\program.asm</FILE><LINE>135</LINE></PRINT_DIODE_NONE>
-  <PRINT_DIODE_BOTH><FILE>D:\Github\MIC\Lesson8\Handin\program\program.asm</FILE><LINE>132</LINE></PRINT_DIODE_BOTH>
-  <PRINT_DIODE_S11><FILE>D:\Github\MIC\Lesson8\Handin\program\program.asm</FILE><LINE>129</LINE></PRINT_DIODE_S11>
-  <PRINT_DIODE_S10><FILE>D:\Github\MIC\Lesson8\Handin\program\program.asm</FILE><LINE>126</LINE></PRINT_DIODE_S10>
-  <PRINT_DIODE_END><FILE>D:\Github\MIC\Lesson8\Handin\program\program.asm</FILE><LINE>138</LINE></PRINT_DIODE_END>
-  <DELAY_MS><FILE>D:\Github\MIC\Lesson8\Handin\program\program.asm</FILE><LINE>157</LINE></DELAY_MS>
-  <DELAY_MS_1><FILE>D:\Github\MIC\Lesson8\Handin\program\program.asm</FILE><LINE>160</LINE></DELAY_MS_1>
-  <DELAY_MS_0><FILE>D:\Github\MIC\Lesson8\Handin\program\program.asm</FILE><LINE>162</LINE></DELAY_MS_0>
+  <INIT><FILE>D:\Github\MIC\Lesson8\Handin\program\program.asm</FILE><LINE>11</LINE></INIT>
+  <MAIN><FILE>D:\Github\MIC\Lesson8\Handin\program\program.asm</FILE><LINE>35</LINE></MAIN>
+  <SUM16><FILE>D:\Github\MIC\Lesson8\Handin\program\program.asm</FILE><LINE>77</LINE></SUM16>
+  <DIV16_8><FILE>D:\Github\MIC\Lesson8\Handin\program\program.asm</FILE><LINE>83</LINE></DIV16_8>
+  <PRINT_DIODE><FILE>D:\Github\MIC\Lesson8\Handin\program\program.asm</FILE><LINE>101</LINE></PRINT_DIODE>
+  <DIV16_8_Loop><FILE>D:\Github\MIC\Lesson8\Handin\program\program.asm</FILE><LINE>88</LINE></DIV16_8_Loop>
+  <PRINT_DIODE_NONE><FILE>D:\Github\MIC\Lesson8\Handin\program\program.asm</FILE><LINE>120</LINE></PRINT_DIODE_NONE>
+  <PRINT_DIODE_BOTH><FILE>D:\Github\MIC\Lesson8\Handin\program\program.asm</FILE><LINE>117</LINE></PRINT_DIODE_BOTH>
+  <PRINT_DIODE_S11><FILE>D:\Github\MIC\Lesson8\Handin\program\program.asm</FILE><LINE>114</LINE></PRINT_DIODE_S11>
+  <PRINT_DIODE_S10><FILE>D:\Github\MIC\Lesson8\Handin\program\program.asm</FILE><LINE>111</LINE></PRINT_DIODE_S10>
+  <PRINT_DIODE_END><FILE>D:\Github\MIC\Lesson8\Handin\program\program.asm</FILE><LINE>123</LINE></PRINT_DIODE_END>
  </LABELS>
 </ASSEMBLER_INFO>

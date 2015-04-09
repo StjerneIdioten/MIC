@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.1.57  D:\Github\MIC\Lesson8\Handin\program\program.asm Thu Apr 09 00:32:50 2015
+AVRASM ver. 2.1.57  D:\Github\MIC\Lesson8\Handin\program\program.asm Fri Apr 10 00:07:22 2015
 
 [builtin](2): Including file 'C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR Assembler\Native\2.1.1175\avrassembler\Include\m32Adef.inc'
                  
@@ -821,12 +821,8 @@ AVRASM ver. 2.1.57  D:\Github\MIC\Lesson8\Handin\program\program.asm Thu Apr 09 
                  
                  
                  ;Definitions
-                 .def COUNT = R20				;Assign a register to hold the count value for the incrementation
-                 .equ S11 = PD2
-                 .equ S10 = PD6
-                 
-                 ;Constants
-                 .equ debounceDelay = 1			;The delay used for debouncing the switches, not that important in this application.
+                 .equ S11 = PD2				;Switch 11
+                 .equ S10 = PD6				;Switch 10
                  
                  ;Entry point
                  .org	0x0000
@@ -841,178 +837,111 @@ AVRASM ver. 2.1.57  D:\Github\MIC\Lesson8\Handin\program\program.asm Thu Apr 09 
                  
                  	;Port D Setup
 000005 eb0b      	ldi	R16, ~((1<<S11)|(1<<S10))
-000006 bb01      	out	DDRD, R16				;Set S11 and S10 as input. Everything else is output.
+000006 bb01      	out	DDRD, R16			;Set S11 and S10 as input. Everything else is output.
                  
                  	;PORTB setup
-000007 ef0f      	ldi R16, 0xFF
-000008 bb07      	out DDRB,R16 				;PORTB = output
-000009 ef0f      	ldi	R16, 0xFF				;
-00000a bb08      	out	PORTB, R16				;Turn LEDS off
+000007 ef0f      	ldi R16, 0xFF			
+000008 bb07      	out DDRB,R16 			;PORTB = output
+000009 ef0f      	ldi	R16, 0xFF			;
+00000a bb08      	out	PORTB, R16			;Turn LEDS off
                  
-00000b 2700      	clr R16
-00000c 2711      	clr R17
-00000d 2722      	clr R18
-00000e 2733      	clr R19
+00000b 2700      	clr R16					;Clear the registers
+00000c 2711      	clr R17					;
+00000d 2722      	clr R18					;	
+00000e 2733      	clr R19					;
                  
-00000f c000      	rjmp	MAIN				;Go to the main loop
+00000f c000      	rjmp	MAIN			;Go to the main loop
                  
                  MAIN:
-000010 e01a      	ldi R17, HIGH(2655)	
-000011 e50f      	ldi R16, LOW(2655)
-000012 e030      	ldi R19, HIGH(74)	
-000013 e42a      	ldi R18, LOW(74)
+                 
+000010 e01a      	ldi R17, HIGH(2655)		;Load in 2655	
+000011 e50f      	ldi R16, LOW(2655)		;
+                 
+000012 e030      	ldi R19, HIGH(74)		;Load in 74	
+000013 e42a      	ldi R18, LOW(74)		;
                  	
-000014 d013      	rcall SUM16
-                 
-000015 e032      	ldi R19, HIGH(592)	
-000016 e520      	ldi R18, LOW(592)
-                 
-000017 d010      	rcall SUM16
-                 
-000018 e035      	ldi R19, HIGH(1380)	
-000019 e624      	ldi R18, LOW(1380)
-                 
-00001a d00d      	rcall SUM16
-                 
-00001b e433      	ldi R19, HIGH(17352)	
-00001c ec28      	ldi R18, LOW(17352)
+000014 d013      	rcall SUM16				;Add 2655 to 74
                  	
-00001d d00a      	rcall SUM16
+000015 e032      	ldi R19, HIGH(592)		;Load in 592
+000016 e520      	ldi R18, LOW(592)		;
+                 
+000017 d010      	rcall SUM16				;Add 592 to the previous sum which was 2729
                  	
-00001e e025      	ldi R18, 5
+000018 e035      	ldi R19, HIGH(1380)		;Load in 1380
+000019 e624      	ldi R18, LOW(1380)		;
+                 	
+00001a d00d      	rcall SUM16				;Add 1380 to the previous sum which was 3321
                  
-00001f d00b      	rcall DIV16_8
+00001b e433      	ldi R19, HIGH(17352)	;Load in 17352	
+00001c ec28      	ldi R18, LOW(17352)		;
+                 	
+00001d d00a      	rcall SUM16				;Add 17352 to the previous sum which was 4701
+                 				
+00001e e025      	ldi R18, 5				;Load in 5
                  
-000020 2f32      	mov R19, R18
-000021 2f21      	mov R18, R17
-000022 2f10      	mov R17, R16
-000023 9510      	com R17
-000024 9520      	com R18
-000025 9530      	com R19
-                 						
-000026 d00f      	rcall PRINT_DIODE
+00001f d00b      	rcall DIV16_8			;Divide the previous sum which was 22053 with 5
+                 
+000020 2f32      	mov R19, R18			;Move the returned results one register up
+000021 2f21      	mov R18, R17			;
+000022 2f10      	mov R17, R16			;
+                 
+000023 9510      	com R17					;Complement the result to accomodate the active low display
+000024 9520      	com R18					;
+000025 9530      	com R19					;
+                 		
+000026 d00f      	rcall PRINT_DIODE		;Go to the printout subroutine		
                  
 000027 cfe8      rjmp MAIN					;Loop
-                 /*
-                 	rcall READ_SWITCH			;Read in the value of the switches
-                 	tst SWITCH_STATE			;Test if the switches are activated
-                 	breq MAIN					;If they werent, then restart
-                 	rcall INCREMENT_7SEG		;If they were, then increment the display
-                 	mov R16,SWITCH_STATE		;Load in the value of the switches into R16
-                 	rcall DELAY_MS				;Create a delay with the switch value
-                 	*/
-                 	
                  
-                 SUM16:
-000028 0f02      	add R16, R18
-000029 1f13      	adc R17, R19
+                 
+                 SUM16:						;Add two 16 bit numbers together. Does not support an overflow into the 17th bit
+000028 0f02      	add R16, R18			;Add the lsb parts together
+000029 1f13      	adc R17, R19			;Add the msb parts together with carry
 00002a 9508      ret
                  
-                 DIV16_8:
+                 
+                 DIV16_8:					;Divide a 16 bit value with an 8 bit value
                  	
-00002b 27ff      	clr ZH ;Kvotient high
-00002c 27ee      	clr ZL ;Kvotient low
+00002b 27ff      	clr ZH					;Quotient high
+00002c 27ee      	clr ZL					;Quotient low
                  
                  DIV16_8_Loop:
                  
-00002d 9631      	adiw ZH:ZL, 1 ;Kvotient ++
-                 
-00002e 1b02      	sub R16 ,R18 ;Træk nævner fra tæller
-00002f 4010      	sbci R17, 0
-000030 f7e0      	brcc DIV16_8_Loop
-                 	
-000031 9731      	sbiw ZH:ZL, 1 ;Kvotient --
-                 
-000032 0f02      	add R16, R18 ;Læg nævner til
-                 	/*
-                 	ldi R18, 0
-                 	adc R16, R18
-                 	*/
-000033 2f20      	mov R18, R16
-000034 018f      	movw R17:R16,ZH:ZL
-                 
+00002d 9631      	adiw ZH:ZL, 1			;Quotient ++
+00002e 1b02      	sub R16 ,R18			;Subract the denominator from the lsb of the numerator
+00002f 4010      	sbci R17, 0				;Subract the carry from the msb of the numerator
+000030 f7e0      	brcc DIV16_8_Loop		;If we did not go below zero, loop.
+000031 9731      	sbiw ZH:ZL, 1			;Quotient --
+000032 0f02      	add R16, R18			;Add the denominator to the numerator
+                 							;I don't need to add any carry since i know this will never result in a carry due to the nature of the addition.
+000033 2f20      	mov R18, R16			;Output the leftover value to R18
+000034 018f      	movw R17:R16,ZH:ZL		;Output the quotient to R17:R16
 000035 9508      ret
                  
                  PRINT_DIODE:
-000036 b300      	in R16, PIND
-000037 6b0b      	ori R16, 0xBB
-000038 9500      	com R16
-000039 2300      	tst R16
-00003a f051      	breq PRINT_DIODE_NONE
-00003b 3404      	cpi R16, (1<<S10)|(1<<S11)
-00003c f031      	breq PRINT_DIODE_BOTH
-00003d ff06      	sbrs R16, S10
-00003e c002      	rjmp PRINT_DIODE_S11
-                 PRINT_DIODE_S10:
-00003f bb18      	out PORTB, R17
-000040 c006      	rjmp PRINT_DIODE_END
-                 PRINT_DIODE_S11:
-000041 bb28      	out PORTB, R18
-000042 c004      	rjmp PRINT_DIODE_END
-                 PRINT_DIODE_BOTH:
-000043 bb38      	out PORTB, R19
-000044 c002      	rjmp PRINT_DIODE_END
-                 PRINT_DIODE_NONE:
-000045 ef0f      	ser R16
-000046 bb08      	out PORTB, R16
-                 PRINT_DIODE_END:
-000047 cfee      	rjmp PRINT_DIODE
-000048 9508      ret
-                 
-                 
-                 
-                 
-                 
-                 /*
-                 READ_SWITCH:					;Total cycles: 3 + 1 + DELAYS_MS(debounceDelay) + 1 + 1 + (READ_SWITCH Branch) + 1 + 4 = 1us * 11 + 1,007ms + (READ_SWITCH Branch) = 1,018ms + The switches time to settle 
-                 	in	SWITCH_STATE, PINC		;Load in the current state of the buttons
-                 	ldi	R16,debounceDelay		;The time in ms that the delay routine shall stall the microcontroller.
-                 	rcall DELAY_MS				;Call the delay subroutine.
-                 	in	R16, PINC				;Load in the new current state of the buttons.
-                 	cp	R16, SWITCH_STATE		;Compare the previous state of the switches to the current state.				
-                 	brne READ_SWITCH			;If they are equal then i assume that the switches have settled.
-                 	com SWITCH_STATE			;Reverse all bits since the switches are active low.
-                 ret
-                 */
-                 DELAY_MS:	;Read in value of delay in R16, 1-255
-                 									; Cycles to execute 
-                 ;----------------------------------/4 cycles, ldi and rcall, +1 cycle if using "call" 
-                 	DELAY_MS_1:	;------------------/    
-000049 ec16      	ldi R17, 198 ;				   /    
-                 	DELAY_MS_0: ;-------------/    /    
-00004a 0000      	nop ;				      /B   /A   
-00004b 951a      	dec R17 ;			      /    /    
-00004c f7e9      	brne DELAY_MS_0 ;---------/    /
-00004d 0000      	nop ;						   / 
-00004e 0000      	nop ;						   /
-00004f 950a      	dec R16 ;			           /    
-000050 f7c1      	brne DELAY_MS_1  ;-------------/    
-000051 9508      ret	;------------------------------/4 cycles
-                 ; Block B: 199*(1+1+1+2)-1 = 994
-                 ; Block A: R16*(1+B+1+1+1+2)-1 = 999, at R16=1; 254999, at R16=255  
-                 ; Total # of cycles is: 8 + A = 1007, at R16=1; 255007, at R16=255
-                 ; The delay would be perfect, if it was used as a macro. But the rest of the program adds some delay too.
-                 
-                 /*
-                 INCREMENT_7SEG:					;Total Delay: 4 + 1 + 1 + 1 + 1 + 1 + 3 + 1 + 1 + 1 + (3 or 4) + 4 = Max 24 * 1us = 24us
-                 	ldi ZH, high(segments<<1)	;load in the high byte of the address of the first value in segments.
-                 	ldi ZL, low(segments<<1)	;load in the low byte of the address of the first value in segments.
-                 	add ZL, COUNT				;Add the offset to get the correct segment
-                 	ldi R16, 0					;Load 0 into R16
-                 	adc ZH, R16					;Add the carry to ZH if there is one from the offset of ZL
-                 
-                 	lpm R16, Z					;Load the value that Z points to, into R16
-                 	out PORTB, R16				;Display it on the display
-                 
-                 	ldi R16, segmentCount		;Load in the value of how many segments there are.
-                 	cp COUNT, R16				;Check if we have reached the limit of how many segments there are.
-                 	breq INCREMENT_7SEG_RESTART_COUNT;Jump to restart the counter if it's time to loop over.
-                 	inc	COUNT					;If it was not time to loop over, then increment the counter.
-                 	rjmp INCREMENT_7SEG_RETURN	;Jump to main and loop again.
-                 INCREMENT_7SEG_RESTART_COUNT:					
-                 	ldi COUNT, 0x00				;Reset the counter
-                 INCREMENT_7SEG_RETURN:
-                 ret
+000036 b300      	in R16, PIND			;Read in the pins
+000037 6b0b      	ori R16, 0xBB			;Mask out the value of all other pins, that the buttons.
+000038 9500      	com R16					;Complement so that we can test for zero
+000039 2300      	tst R16					;Test for zero
+00003a f051      	breq PRINT_DIODE_NONE	;Branch to none, if no switches was activated.
+00003b 3404      	cpi R16, (1<<S10)|(1<<S11) ;If not zero, then compare with a mask where both switches are activated.
+00003c f031      	breq PRINT_DIODE_BOTH	;Branch if both were activated
+00003d ff06      	sbrs R16, S10			;If they werent both activated, then check if S10 is activated.
+00003e c002      	rjmp PRINT_DIODE_S11	;Branch to S11 handling, if S10 was not active.
+                 PRINT_DIODE_S10:			;Go to S10 handling if S10 was active.
+00003f bb18      	out PORTB, R17			;Output the LSB of the quotient
+000040 c006      	rjmp PRINT_DIODE_END	;Jump to the end
+                 PRINT_DIODE_S11:			;S11 handling
+000041 bb28      	out PORTB, R18			;Output the MSB of the quotient
+000042 c004      	rjmp PRINT_DIODE_END	;Jump to the end
+                 PRINT_DIODE_BOTH:			;Both switches active, handling
+000043 bb38      	out PORTB, R19			;Output the leftover value
+000044 c002      	rjmp PRINT_DIODE_END	;Jump to the end
+                 PRINT_DIODE_NONE:			;No switches active, handling
+000045 ef0f      	ser R16					;Set the register to accomodate active low
+000046 bb08      	out PORTB, R16			;Clear the display
+                 PRINT_DIODE_END:			;Loop, handling
+000047 cfee      	rjmp PRINT_DIODE		;Loop
 
 
 RESOURCE USE INFORMATION
@@ -1032,7 +961,7 @@ counted separately from r26..r31 here.
 "ATmega32A" register use summary:
 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 r5 :   0 r6 :   0 r7 :   0 
 r8 :   0 r9 :   0 r10:   0 r11:   0 r12:   0 r13:   0 r14:   0 r15:   0 
-r16:  27 r17:  11 r18:  14 r19:   9 r20:   0 r21:   0 r22:   0 r23:   0 
+r16:  26 r17:   9 r18:  14 r19:   9 r20:   0 r21:   0 r22:   0 r23:   0 
 r24:   0 r25:   0 r26:   0 r27:   0 r28:   0 r29:   0 r30:   4 r31:   4 
 x  :   0 y  :   0 z  :   0 
 Registers used: 6 out of 35 (17.1%)
@@ -1042,27 +971,27 @@ Registers used: 6 out of 35 (17.1%)
 andi  :   0 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   0 
 brcc  :   1 brcs  :   0 break :   0 breq  :   2 brge  :   0 brhc  :   0 
 brhs  :   0 brid  :   0 brie  :   0 brlo  :   0 brlt  :   0 brmi  :   0 
-brne  :   2 brpl  :   0 brsh  :   0 brtc  :   0 brts  :   0 brvc  :   0 
+brne  :   0 brpl  :   0 brsh  :   0 brtc  :   0 brts  :   0 brvc  :   0 
 brvs  :   0 bset  :   0 bst   :   0 call  :   0 cbi   :   0 cbr   :   0 
 clc   :   0 clh   :   0 cli   :   0 cln   :   0 clr   :   6 cls   :   0 
 clt   :   0 clv   :   0 clz   :   0 com   :   4 cp    :   0 cpc   :   0 
-cpi   :   1 cpse  :   0 dec   :   2 eor   :   0 fmul  :   0 fmuls :   0 
+cpi   :   1 cpse  :   0 dec   :   0 eor   :   0 fmul  :   0 fmuls :   0 
 fmulsu:   0 icall :   0 ijmp  :   0 in    :   1 inc   :   0 jmp   :   0 
-ld    :   0 ldd   :   0 ldi   :  17 lds   :   0 lpm   :   0 lsl   :   0 
+ld    :   0 ldd   :   0 ldi   :  16 lds   :   0 lpm   :   0 lsl   :   0 
 lsr   :   0 mov   :   4 movw  :   1 mul   :   0 muls  :   0 mulsu :   0 
-neg   :   0 nop   :   3 or    :   0 ori   :   1 out   :   9 pop   :   0 
-push  :   0 rcall :   6 ret   :   4 reti  :   0 rjmp  :   8 rol   :   0 
+neg   :   0 nop   :   0 or    :   0 ori   :   1 out   :   9 pop   :   0 
+push  :   0 rcall :   6 ret   :   3 reti  :   0 rjmp  :   8 rol   :   0 
 ror   :   0 sbc   :   0 sbci  :   1 sbi   :   0 sbic  :   0 sbis  :   0 
 sbiw  :   1 sbr   :   0 sbrc  :   0 sbrs  :   1 sec   :   0 seh   :   0 
 sei   :   0 sen   :   0 ser   :   1 ses   :   0 set   :   0 sev   :   0 
 sez   :   0 sleep :   0 spm   :   0 st    :   0 std   :   0 sts   :   0 
 sub   :   1 subi  :   0 swap  :   0 tst   :   1 wdr   :   0 
-Instructions used: 26 out of 113 (23.0%)
+Instructions used: 23 out of 113 (20.4%)
 
 "ATmega32A" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x0000a4    164      0    164   32768   0.5%
+[.cseg] 0x000000 0x000092    146      0    146   32768   0.4%
 [.dseg] 0x000060 0x000060      0      0      0    2048   0.0%
 [.eseg] 0x000000 0x000000      0      0      0    1024   0.0%
 
