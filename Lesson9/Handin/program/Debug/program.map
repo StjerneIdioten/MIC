@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.1.57  D:\Github\MIC\Lesson9\Handin\program\program.asm Fri Apr 10 23:10:47 2015
+AVRASM ver. 2.1.57  D:\Github\MIC\Lesson9\Handin\program\program.asm Fri Apr 17 00:34:49 2015
 
 
 EQU  SIGNATURE_000 0000001e
@@ -569,7 +569,7 @@ EQU  TWIaddr      00000026
 EQU  SPMRaddr     00000028
 EQU  INT_VECTORS_SIZE 0000002a
 CSEG INIT         00000001
-CSEG PWM_Set      0000001f
+CSEG PWM_Set      0000001e
 CSEG MAIN         00000013
-CSEG Pot_Read     00000019
-CSEG Pot_Read_Loop 0000001a
+CSEG Pot_Read     00000018
+CSEG Pot_Read_Loop 00000019

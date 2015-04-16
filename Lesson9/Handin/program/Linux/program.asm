@@ -1,4 +1,4 @@
-;.include "m32def.inc"
+.include "m32def.inc"
 
 ;Entry point
 .org	0x0000
