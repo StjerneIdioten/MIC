@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.1.57  D:\Github\MIC\Lesson9\Handin\program\program.asm Fri Apr 10 23:10:47 2015
+AVRASM ver. 2.1.57  D:\Github\MIC\Lesson9\Handin\program\program.asm Fri Apr 17 00:34:49 2015
 
 [builtin](2): Including file 'C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR Assembler\Native\2.1.1175\avrassembler\Include\m32Adef.inc'
                  
@@ -832,18 +832,18 @@ AVRASM ver. 2.1.57  D:\Github\MIC\Lesson9\Handin\program\program.asm Fri Apr 10 
 000004 bf0e          OUT	SPH, R16
                  
                  	;Port A Setup
-000005 ef0e      	ldi	R16, ~((1<<PA0))
-000006 bb0a      	out	DDRA, R16			;Set S11 and S10 as input. Everything else is output.
+000005 ef0e      	ldi	R16, ~((1<<PA0))	;Set PA0/ADC0 as input
+000006 bb0a      	out	DDRA, R16			;
                  
                  	;PORTB setup
-000007 e008      	ldi R16, (1<<PB3)
-000008 bb07      	out DDRB, R16
+000007 e008      	ldi R16, (1<<PB3)		;Set PB3/OC0 as output
+000008 bb07      	out DDRB, R16			;
                  
                  	;Setup timer0
 000009 e60a      	ldi R16, 0b01101010		;Fast PWN, Non-inverting, PWM-frequency = ~3906,25 Hz
 00000a bf03      	out TCCR0, R16			;
 00000b ef0f      	ldi R16, ~0x00			;Turn off the led.
-00000c 940e 001f 	call PWM_Set			;
+00000c 940e 001e 	call PWM_Set			;
                  
                  	;Setup ADC
 00000e e805      	ldi R16, 0b10000101		;Turn on ADC, ADC-Frequency = Clock/32 =125000
@@ -858,23 +858,23 @@ AVRASM ver. 2.1.57  D:\Github\MIC\Lesson9\Handin\program\program.asm Fri Apr 10 
                  
                  MAIN:	
                  	
-000013 940e 0019 	call Pot_Read
-000015 9500      	com R16
-000016 940e 001f 	call PWM_Set
+000013 940e 0018 	call Pot_Read			;Read the potentiometer
+000015 940e 001e 	call PWM_Set			;Set the duty cycle of the pwn
                  
-000018 cffa      rjmp MAIN					;Loop
+000017 cffb      rjmp MAIN					;Loop
                  
                  Pot_Read:
-000019 9a36      	sbi ADCSR, ADSC
+000018 9a36      	sbi ADCSR, ADSC			;Start a conversion
                  Pot_Read_Loop:
-00001a 9b34      	sbis ADCSR, ADIF
-00001b cffe      	rjmp Pot_Read_Loop
-00001c 9a34      	sbi ADCSR, ADIF
-00001d b105      	in R16, ADCH
-00001e 9508      ret
+000019 9b34      	sbis ADCSR, ADIF		;Check if the conversion is over yet
+00001a cffe      	rjmp Pot_Read_Loop		;Loop if not
+00001b 9a34      	sbi ADCSR, ADIF			;Clear the flag
+00001c b105      	in R16, ADCH			;Read in the most significant byte of the result
+00001d 9508      ret
                  
                  PWM_Set:
-00001f bf0c      	out OCR0, R16
+00001e 9500      	com R16					;Complement the returned value to accomodate the active-low led
+00001f bf0c      	out OCR0, R16			;Set the duty cycle
 000020 9508      ret
 
 
