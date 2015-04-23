@@ -23,9 +23,9 @@
  <LABELS>
   <INIT><FILE>D:\Github\MIC\Lesson10\Handin\program\program.asm</FILE><LINE>25</LINE></INIT>
   <Timer0_Interrupt><FILE>D:\Github\MIC\Lesson10\Handin\program\program.asm</FILE><LINE>21</LINE></Timer0_Interrupt>
-  <Loop><FILE>D:\Github\MIC\Lesson10\Handin\program\program.asm</FILE><LINE>52</LINE></Loop>
-  <Tick_5Hz_Handling><FILE>D:\Github\MIC\Lesson10\Handin\program\program.asm</FILE><LINE>57</LINE></Tick_5Hz_Handling>
-  <Tick_2Hz_Handling><FILE>D:\Github\MIC\Lesson10\Handin\program\program.asm</FILE><LINE>73</LINE></Tick_2Hz_Handling>
-  <Tick_1Hz_Handling><FILE>D:\Github\MIC\Lesson10\Handin\program\program.asm</FILE><LINE>89</LINE></Tick_1Hz_Handling>
+  <Loop><FILE>D:\Github\MIC\Lesson10\Handin\program\program.asm</FILE><LINE>54</LINE></Loop>
+  <Tick_5Hz_Handling><FILE>D:\Github\MIC\Lesson10\Handin\program\program.asm</FILE><LINE>59</LINE></Tick_5Hz_Handling>
+  <Tick_2Hz_Handling><FILE>D:\Github\MIC\Lesson10\Handin\program\program.asm</FILE><LINE>75</LINE></Tick_2Hz_Handling>
+  <Tick_1Hz_Handling><FILE>D:\Github\MIC\Lesson10\Handin\program\program.asm</FILE><LINE>91</LINE></Tick_1Hz_Handling>
  </LABELS>
 </ASSEMBLER_INFO>

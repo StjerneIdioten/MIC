@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.1.57  D:\Github\MIC\Lesson10\Handin\program\program.asm Sun Apr 19 23:18:26 2015
+AVRASM ver. 2.1.57  D:\Github\MIC\Lesson10\Handin\program\program.asm Thu Apr 23 22:48:33 2015
 
 [builtin](2): Including file 'C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR Assembler\Native\2.1.1175\avrassembler\Include\m32Adef.inc'
                  
@@ -862,67 +862,69 @@ AVRASM ver. 2.1.57  D:\Github\MIC\Lesson10\Handin\program\program.asm Sun Apr 19
 000023 e206      	ldi	R16, 38					; 38+1 cycles = 10[ms] for every output compare match
 000024 bf0c      	out	OCR0, R16				;
                  
-                 	;Enable interrupts
-000025 e002      	ldi	R16, (1<<OCIE0)			; enable interrupt on output compare match for timer0
-000026 bf09      	out	TIMSK, R16				; timer/interrupt masking register
-000027 9478      	sei							; enable global interrupt
+000025 e169      	ldi tick_1Hz, 25			;Preload the 1Hz tick with half it's overflow value to make it start at the same time as the 2Hz tick.
                  
-000028 940c 002a 	jmp Loop
+                 	;Enable interrupts
+000026 e002      	ldi	R16, (1<<OCIE0)			; enable interrupt on output compare match for timer0
+000027 bf09      	out	TIMSK, R16				; timer/interrupt masking register
+000028 9478      	sei							; enable global interrupt
+                 
+000029 940c 002b 	jmp Loop
                  
                  Loop:	
-00002a 2000      	tst tick					;Test if there has been a tick					
-00002b f3f1      	breq Loop					;Loop if not
-00002c 940a      	dec tick					;Decrement if there was one
+00002b 2000      	tst tick					;Test if there has been a tick					
+00002c f3f1      	breq Loop					;Loop if not
+00002d 940a      	dec tick					;Decrement if there was one
                  
                  Tick_5Hz_Handling:				;Handles the strobe of the A segment
                  
-00002d 9543      	inc tick_5Hz				;Increment the 5Hz tick variable
-00002e 304a      	cpi tick_5Hz, 10			;5Hz = 1/5 = 0.2s, but when it's toggled as a blink, then it becomes 0.2s/2 = 0.1s 
-00002f f449      	brne Tick_2Hz_Handling		;Skip if we have not reached the correct delay
+00002e 9543      	inc tick_5Hz				;Increment the 5Hz tick variable
+00002f 304a      	cpi tick_5Hz, 10			;5Hz = 1/5 = 0.2s, but when it's toggled as a blink, then it becomes 0.2s/2 = 0.1s 
+000030 f449      	brne Tick_2Hz_Handling		;Skip if we have not reached the correct delay
                  		
-000030 2744      	clr tick_5Hz				;Clear the 5Hz tick variable
-000031 b308      	in R16, PORTB				;Load in the current status of the segments
-000032 2f10      	mov R17, R16				;Move R16 into R17 for later calculations
-000033 9510      	com R17						;Complement this value since the segments are active low. R16 can stay complemented and therefore save me a cycle.
-000034 7400      	andi R16, (1<<Seg_A)		;Mask out everything but the bit we are toggling
-000035 7212      	andi R17, (1<<Seg_G)|(1<<Seg_D) ;Create a mask where everything but the other two segments are masked out
-000036 2b01      	or R16, R17					;Or the two masks to get a mask where the segment is toggled and the other two are kept as they were
-000037 9500      	com R16						;Complement to accomodate active low
-000038 bb08      	out PORTB, R16				;Output to the port
+000031 2744      	clr tick_5Hz				;Clear the 5Hz tick variable
+000032 b308      	in R16, PORTB				;Load in the current status of the segments
+000033 2f10      	mov R17, R16				;Move R16 into R17 for later calculations
+000034 9510      	com R17						;Complement this value since the segments are active low. R16 can stay complemented and therefore save me a cycle.
+000035 7400      	andi R16, (1<<Seg_A)		;Mask out everything but the bit we are toggling
+000036 7212      	andi R17, (1<<Seg_G)|(1<<Seg_D) ;Create a mask where everything but the other two segments are masked out
+000037 2b01      	or R16, R17					;Or the two masks to get a mask where the segment is toggled and the other two are kept as they were
+000038 9500      	com R16						;Complement to accomodate active low
+000039 bb08      	out PORTB, R16				;Output to the port
                  
                  Tick_2Hz_Handling:
                  
-000039 9553      	inc tick_2Hz				;Increment the 2Hz tick variable
-00003a 3159      	cpi tick_2Hz, 25			;2Hz = 1/2 = 0.5s, but when it's toggled as a blink, then it becomes 0.5s/2 = 0.25s 
-00003b f449      	brne Tick_1Hz_Handling		;Skip if we have not reached the correct delay
+00003a 9553      	inc tick_2Hz				;Increment the 2Hz tick variable
+00003b 3159      	cpi tick_2Hz, 25			;2Hz = 1/2 = 0.5s, but when it's toggled as a blink, then it becomes 0.5s/2 = 0.25s 
+00003c f449      	brne Tick_1Hz_Handling		;Skip if we have not reached the correct delay
                  			
-00003c 2755      	clr tick_2Hz				;Clear the 2Hz tick variable
-00003d b308      	in R16, PORTB				;Load in the current status of the segments
-00003e 2f10      	mov R17, R16				;Move R16 into R17 for later calculations
-00003f 9510      	com R17						;Complement this value since the segments are active low. R16 can stay complemented and therefore save me a cycle.
-000040 7200      	andi R16, (1<<Seg_G)		;Mask out everything but the bit we are toggling
-000041 7412      	andi R17, (1<<Seg_A)|(1<<Seg_D) ;Create a mask where everything but the other two segments are masked out
-000042 2b01      	or R16, R17					;Or the two masks to get a mask where the segment is toggled and the other two are kept as they were
-000043 9500      	com R16						;Complement to accomodate active low
-000044 bb08      	out PORTB, R16				;Output to the port
+00003d 2755      	clr tick_2Hz				;Clear the 2Hz tick variable
+00003e b308      	in R16, PORTB				;Load in the current status of the segments
+00003f 2f10      	mov R17, R16				;Move R16 into R17 for later calculations
+000040 9510      	com R17						;Complement this value since the segments are active low. R16 can stay complemented and therefore save me a cycle.
+000041 7200      	andi R16, (1<<Seg_G)		;Mask out everything but the bit we are toggling
+000042 7412      	andi R17, (1<<Seg_A)|(1<<Seg_D) ;Create a mask where everything but the other two segments are masked out
+000043 2b01      	or R16, R17					;Or the two masks to get a mask where the segment is toggled and the other two are kept as they were
+000044 9500      	com R16						;Complement to accomodate active low
+000045 bb08      	out PORTB, R16				;Output to the port
                  
                  Tick_1Hz_Handling:
                  
-000045 9563      	inc tick_1Hz				;Increment the 1Hz tick variable
-000046 3362      	cpi tick_1Hz, 50			;1Hz = 1/1 = 1s, but when it's toggled as a blink, then it becomes 1s/2 = 0.5s 
-000047 f711      	brne Loop					;Skip if we have not reached the correct delay
+000046 9563      	inc tick_1Hz				;Increment the 1Hz tick variable
+000047 3362      	cpi tick_1Hz, 50			;1Hz = 1/1 = 1s, but when it's toggled as a blink, then it becomes 1s/2 = 0.5s 
+000048 f711      	brne Loop					;Skip if we have not reached the correct delay
                  			
-000048 2766      	clr tick_1Hz				;Clear the 1Hz tick variable
-000049 b308      	in R16, PORTB				;Load in the current status of the segments
-00004a 2f10      	mov R17, R16				;Move R16 into R17 for later calculations
-00004b 9510      	com R17						;Complement this value since the segments are active low. R16 can stay complemented and therefore save me a cycle.
-00004c 7002      	andi R16, (1<<Seg_D)		;Mask out everything but the bit we are toggling
-00004d 7610      	andi R17, (1<<Seg_A)|(1<<Seg_G) ;Create a mask where everything but the other two segments are masked out
-00004e 2b01      	or R16, R17					;Or the two masks to get a mask where the segment is toggled and the other two are kept as they were
-00004f 9500      	com R16						;Complement to accomodate active low
-000050 bb08      	out PORTB, R16				;Output to the port
+000049 2766      	clr tick_1Hz				;Clear the 1Hz tick variable
+00004a b308      	in R16, PORTB				;Load in the current status of the segments
+00004b 2f10      	mov R17, R16				;Move R16 into R17 for later calculations
+00004c 9510      	com R17						;Complement this value since the segments are active low. R16 can stay complemented and therefore save me a cycle.
+00004d 7002      	andi R16, (1<<Seg_D)		;Mask out everything but the bit we are toggling
+00004e 7610      	andi R17, (1<<Seg_A)|(1<<Seg_G) ;Create a mask where everything but the other two segments are masked out
+00004f 2b01      	or R16, R17					;Or the two masks to get a mask where the segment is toggled and the other two are kept as they were
+000050 9500      	com R16						;Complement to accomodate active low
+000051 bb08      	out PORTB, R16				;Output to the port
                  
-000051 cfd8      rjmp Loop
+000052 cfd8      rjmp Loop
                  
 
 
@@ -943,7 +945,7 @@ counted separately from r26..r31 here.
 "ATmega32A" register use summary:
 r0 :   3 r1 :   0 r2 :   0 r3 :   0 r4 :   0 r5 :   0 r6 :   0 r7 :   0 
 r8 :   0 r9 :   0 r10:   0 r11:   0 r12:   0 r13:   0 r14:   0 r15:   0 
-r16:  33 r17:  12 r18:   0 r19:   0 r20:   3 r21:   3 r22:   3 r23:   0 
+r16:  33 r17:  12 r18:   0 r19:   0 r20:   3 r21:   3 r22:   4 r23:   0 
 r24:   0 r25:   0 r26:   0 r27:   0 r28:   0 r29:   0 r30:   0 r31:   0 
 x  :   0 y  :   0 z  :   0 
 Registers used: 6 out of 35 (17.1%)
@@ -959,7 +961,7 @@ clc   :   0 clh   :   0 cli   :   0 cln   :   0 clr   :   3 cls   :   0
 clt   :   0 clv   :   0 clz   :   0 com   :   6 cp    :   0 cpc   :   0 
 cpi   :   3 cpse  :   0 dec   :   1 eor   :   0 fmul  :   0 fmuls :   0 
 fmulsu:   0 icall :   0 ijmp  :   0 in    :   3 inc   :   4 jmp   :   2 
-ld    :   0 ldd   :   0 ldi   :   7 lds   :   0 lpm   :   0 lsl   :   0 
+ld    :   0 ldd   :   0 ldi   :   8 lds   :   0 lpm   :   0 lsl   :   0 
 lsr   :   0 mov   :   3 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
 neg   :   0 nop   :   0 or    :   3 ori   :   0 out   :  11 pop   :   0 
 push  :   0 rcall :   0 ret   :   0 reti  :   1 rjmp  :   2 rol   :   0 
@@ -973,7 +975,7 @@ Instructions used: 18 out of 113 (15.9%)
 "ATmega32A" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x0000a4    126      0    126   32768   0.4%
+[.cseg] 0x000000 0x0000a6    128      0    128   32768   0.4%
 [.dseg] 0x000060 0x000060      0      0      0    2048   0.0%
 [.eseg] 0x000000 0x000000      0      0      0    1024   0.0%
 

@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.1.57  D:\Github\MIC\Lesson10\Handin\program\program.asm Sun Apr 19 23:18:26 2015
+AVRASM ver. 2.1.57  D:\Github\MIC\Lesson10\Handin\program\program.asm Thu Apr 23 22:48:33 2015
 
 
 EQU  SIGNATURE_000 0000001e
@@ -577,7 +577,7 @@ DEF  tick_2Hz     r21
 DEF  tick_1Hz     r22
 CSEG INIT         00000018
 CSEG Timer0_Interrupt 00000016
-CSEG Loop         0000002a
-CSEG Tick_5Hz_Handling 0000002d
-CSEG Tick_2Hz_Handling 00000039
-CSEG Tick_1Hz_Handling 00000045
+CSEG Loop         0000002b
+CSEG Tick_5Hz_Handling 0000002e
+CSEG Tick_2Hz_Handling 0000003a
+CSEG Tick_1Hz_Handling 00000046

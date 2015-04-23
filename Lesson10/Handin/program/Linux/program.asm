@@ -1,4 +1,4 @@
-;.include "m32def.inc"
+.include "m32def.inc"
 
 ;Defines
 .equ Seg_A = PB6				;Pin of the A segment
@@ -41,6 +41,8 @@ INIT:
 	out	TCNT0, R16				;
 	ldi	R16, 38					; 38+1 cycles = 10[ms] for every output compare match
 	out	OCR0, R16				;
+
+	ldi tick_1Hz, 25			;Preload the 1Hz tick with half it's overflow value to make it start at the same time as the 2Hz tick.
 
 	;Enable interrupts
 	ldi	R16, (1<<OCIE0)			; enable interrupt on output compare match for timer0
