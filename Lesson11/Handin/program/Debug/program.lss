@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.1.57  D:\Github\MIC\Lesson11\Handin\program\program.asm Wed Apr 29 00:10:13 2015
+AVRASM ver. 2.1.57  D:\Github\MIC\Lesson11\Handin\program\program.asm Mon May 04 22:47:08 2015
 
 [builtin](2): Including file 'C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR Assembler\Native\2.1.1175\avrassembler\Include\m32Adef.inc'
                  
@@ -859,12 +859,12 @@ AVRASM ver. 2.1.57  D:\Github\MIC\Lesson11\Handin\program\program.asm Wed Apr 29
 00002b 940c 002d 	jmp Main
                  
                  Main:	
-                 
+                 ;Just loop
 00002d cfff      rjmp Main
                  
-                  ;Waits for an empty transmit buffer and then moves R16 to the transmit buffer
-                  USART_Transmit: 
-                  USART_Transmit_Start:
+                 ;Waits for an empty transmit buffer and then moves R16 to the transmit buffer
+                 USART_Transmit: 
+                 USART_Transmit_Start:
                  	; Wait for empty transmit buffer
 00002e 9b5d      	sbis	UCSRA,	UDRE
 00002f cffe      	rjmp	USART_Transmit_Start
@@ -872,29 +872,29 @@ AVRASM ver. 2.1.57  D:\Github\MIC\Lesson11\Handin\program\program.asm Wed Apr 29
 000031 9508      ret
                  
                  USART_Received:
-000032 b10c      	in R16, UDR
+000032 b10c      	in R16, UDR				;Read in the received character
                  
-000033 3601      	cpi R16, 'a'
+000033 3601      	cpi R16, 'a'			;Compare with 'a' and branch if lower
 000034 f020      	brlo USART_Received_Capital_Check
                  
-000035 370b      	cpi R16, 0x7B				
+000035 370b      	cpi R16, 0x7B			;Compare with the value after 'z' and branch if equal or higher				
 000036 f440      	brsh USART_Received_End
                  
-000037 5200      	subi R16, 0x20
+000037 5200      	subi R16, 0x20			;If we are within the range a-z then subtract 0x20 to get the capital letter and jump to the end.
 000038 c006      	rjmp USART_Received_End
                  	
                  USART_Received_Capital_Check:
-000039 3401      	cpi R16, 'A'
+000039 3401      	cpi R16, 'A'			;Compare with 'A' and branch if lower
 00003a f020      	brlo USART_Received_End
                  
-00003b 350b      	cpi R16, 0x5B				
+00003b 350b      	cpi R16, 0x5B			;Compare with the value after 'Z' and branch if equal or higher		
 00003c f410      	brsh USART_Received_End
                  
-00003d e210      	ldi R17, 0x20
+00003d e210      	ldi R17, 0x20			;If we are within the range A-Z then add 0x20 to get the lowercase letter and jump to the end.
 00003e 0f01      	add R16, R17
                  
                  USART_Received_End:
-00003f 940e 002e 	call USART_Transmit
+00003f 940e 002e 	call USART_Transmit		;Echo the received and processed value
 000041 9518      reti
                  
 
